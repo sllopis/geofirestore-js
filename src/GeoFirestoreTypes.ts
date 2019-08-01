@@ -1,3 +1,4 @@
+// @ts-nocheck: Cannot find module
 /* tslint:disable:no-import-side-effect no-namespace no-shadowed-variable */
 import * as FirestoreTypes from '@firebase/firestore-types';
 import '@google-cloud/firestore/types/firestore';
