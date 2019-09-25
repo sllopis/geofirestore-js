@@ -13,6 +13,12 @@ const copy = copier({
   }]
 });
 
+const onwarn = (warning, rollupWarn) => {
+  if (warning.code !== 'CIRCULAR_DEPENDENCY') {
+    rollupWarn(warning)
+  }
+};
+
 const plugins = [
   resolveModule(),
   typescript({
@@ -22,7 +28,7 @@ const plugins = [
   copy
 ];
 
-const completeBuilds = [{
+export default [{
     input: 'src/index.ts',
     output: [{
         file: pkg.main,
@@ -33,7 +39,8 @@ const completeBuilds = [{
         format: 'es'
       }
     ],
-    plugins
+    plugins,
+    onwarn
   },
   {
     input: 'src/index.ts',
@@ -46,8 +53,7 @@ const completeBuilds = [{
     plugins: [
       ...plugins,
       uglify()
-    ]
+    ],
+    onwarn
   }
 ];
-
-export default [...completeBuilds];
