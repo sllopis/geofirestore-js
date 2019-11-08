@@ -1,8 +1,8 @@
 import * as chai from 'chai';
 import * as firebase from 'firebase/app';
 
-import { GeoFirestore } from '../src/GeoFirestore';
-import { GeoQuery } from '../src/GeoQuery';
+import { GeoFirestore } from '../src/firestore';
+import { GeoQuery } from '../src/query';
 import {
   afterEachHelper, beforeEachHelper, collection, dummyData,
   firestore, invalidFirestores, stubDatabase, invalidLocations, geocollection, generateDocs

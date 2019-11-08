@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import * as firebase from 'firebase/app';
 
-import { GeoQuerySnapshot } from '../src/GeoQuerySnapshot';
+import { GeoQuerySnapshot } from '../src/querysnapshot';
 import { afterEachHelper, beforeEachHelper, collection, dummyData, invalidFirestores, stubDatabase } from './common';
 
 const expect = chai.expect;

@@ -2,8 +2,8 @@ import * as chai from 'chai';
 import * as firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import { GeoCollectionReference } from '../src/GeoCollectionReference';
-import { GeoDocumentReference } from '../src/GeoDocumentReference';
+import { GeoCollectionReference } from '../src/collectionreference';
+import { GeoDocumentReference } from '../src/documentreference';
 import {
   afterEachHelper, beforeEachHelper, firestore, geocollection, invalidFirestores,
   invalidObjects, testCollectionName, validGeoFirestoreDocuments, wait

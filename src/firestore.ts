@@ -1,6 +1,6 @@
-import { GeoFirestoreTypes } from './GeoFirestoreTypes';
-import { GeoCollectionReference } from './GeoCollectionReference';
-import { GeoWriteBatch } from './GeoWriteBatch';
+import { GeoFirestoreTypes } from './firestoretypes';
+import { GeoCollectionReference } from './collectionreference';
+import { GeoWriteBatch } from './writebatch';
 
 /**
  * `GeoFirestore` represents a Firestore Database and is the entry point for all GeoFirestore operations.

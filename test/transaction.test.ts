@@ -1,6 +1,6 @@
 import * as chai from 'chai';
 
-import { GeoTransaction } from '../src';
+import { GeoTransaction } from '../src/transaction';
 import { 
   afterEachHelper, beforeEachHelper, collection, dummyData,
   geocollection, geofirestore, invalidFirestores, stubDatabase, wait

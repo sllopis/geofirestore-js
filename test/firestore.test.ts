@@ -1,9 +1,9 @@
 import * as chai from 'chai';
 
-import { GeoFirestore, GeoTransaction } from '../src';
+import { GeoFirestore } from '../src';
 import {
   afterEachHelper, beforeEachHelper, firestore, invalidFirestores,
-  testCollectionName, geofirestore, geocollection
+  testCollectionName, geofirestore
 } from './common';
 
 const expect = chai.expect;

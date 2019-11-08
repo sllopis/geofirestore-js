@@ -1,4 +1,4 @@
-import { GeoFirestoreTypes } from './GeoFirestoreTypes';
+import { GeoFirestoreTypes } from './firestoretypes';
 
 // Characters used in location geohashes
 export const BASE32 = '0123456789bcdefghjkmnpqrstuvwxyz';

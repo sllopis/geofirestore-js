@@ -1,4 +1,4 @@
-import { GeoFirestoreTypes } from './GeoFirestoreTypes';
+import { GeoFirestoreTypes } from './firestoretypes';
 import { generateGeoQueryDocumentSnapshot, validateLocation } from './utils';
 
 /**

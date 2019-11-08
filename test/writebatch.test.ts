@@ -1,6 +1,6 @@
 import * as chai from 'chai';
 
-import { GeoWriteBatch } from '../src/GeoWriteBatch';
+import { GeoWriteBatch } from '../src/writebatch';
 import {
   afterEachHelper, beforeEachHelper, collection, dummyData, failTestOnCaughtError,
   firestore, geocollection, geofirestore, invalidFirestores, testCollectionName

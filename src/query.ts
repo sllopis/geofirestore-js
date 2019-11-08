@@ -1,8 +1,7 @@
-import { GeoFirestoreTypes } from './GeoFirestoreTypes';
-import { GeoFirestore } from './GeoFirestore';
-import { GeoJoinerGet } from './GeoJoinerGet';
-import { GeoJoinerOnSnapshot } from './GeoJoinerOnSnapshot';
-import { GeoQuerySnapshot } from './GeoQuerySnapshot';
+import { GeoFirestoreTypes } from './firestoretypes';
+import { GeoFirestore } from './firestore';
+import { GeoJoinerGet, GeoJoinerOnSnapshot } from './joiner';
+import { GeoQuerySnapshot } from './querysnapshot';
 import { validateQueryCriteria, geohashQueries, validateLimit } from './utils';
 
 /**

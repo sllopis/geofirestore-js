@@ -1,6 +1,6 @@
-import { GeoFirestoreTypes } from './GeoFirestoreTypes';
-import { GeoDocumentReference } from './GeoDocumentReference';
-import { GeoDocumentSnapshot } from './GeoDocumentSnapshot';
+import { GeoFirestoreTypes } from './firestoretypes';
+import { GeoDocumentReference } from './documentreference';
+import { GeoDocumentSnapshot } from './documentsnapshot';
 import { encodeSetDocument, encodeUpdateDocument, sanitizeSetOptions } from './utils';
 
 /**

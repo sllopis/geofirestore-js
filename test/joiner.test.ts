@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import * as firebase from 'firebase/app';
 
-import { GeoJoinerOnSnapshot } from '../src/GeoJoinerOnSnapshot';
+import { GeoJoinerOnSnapshot } from '../src/joiner';
 import {
   afterEachHelper, beforeEachHelper, collection,
   stubDatabase, invalidQueryCriterias, validQueryCriterias, geocollection
