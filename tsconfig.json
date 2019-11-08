@@ -1,13 +1,11 @@
 {
+  "extends": "./node_modules/gts/tsconfig-google.json",
   "compilerOptions": {
-    "outDir": "./dist",
     "baseUrl": ".",
-    "inlineSourceMap": true,
-    "declaration": true,
+    "outDir": "./dist",
     "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "target": "es5",
+    "strictNullChecks": false,
+    "strictPropertyInitialization": false,
     "typeRoots": [
       "node_modules/@types"
     ],

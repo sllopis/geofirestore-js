@@ -30,7 +30,7 @@ describe('GeoQuerySnapshot Tests:', () => {
       stubDatabase()
         .then(() => collection.get())
         .then((snapshot) => {
-          expect(() => new GeoQuerySnapshot(snapshot, new firebase.firestore.GeoPoint(0, 0))).to.not.throw();
+          expect(() => new GeoQuerySnapshot(snapshot, { center: new firebase.firestore.GeoPoint(0, 0) })).to.not.throw();
         })
         .then(done);
     });
@@ -96,7 +96,7 @@ describe('GeoQuerySnapshot Tests:', () => {
       stubDatabase()
         .then(() => collection.get())
         .then((snapshot) => {
-          const docs = (new GeoQuerySnapshot(snapshot, new firebase.firestore.GeoPoint(2, 5))).docs;
+          const docs = (new GeoQuerySnapshot(snapshot, { center: new firebase.firestore.GeoPoint(2, 5) })).docs;
           const results = docs.map((d) => {
             d.data = d.data();
             return d;

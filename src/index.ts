@@ -2,7 +2,7 @@ export * from './collectionreference';
 export * from './documentreference';
 export * from './documentsnapshot';
 export * from './firestore';
-export * from './firestoretypes';
+export * from './geofirestoretypes';
 export * from './query';
 export * from './querysnapshot';
 export * from './transaction';

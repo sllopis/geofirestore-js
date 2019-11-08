@@ -24,9 +24,8 @@ describe('GeoCollectionReference Tests:', () => {
   describe('Constructor:', () => {
     it('Constructor throws errors given invalid Firestore CollectionReference', () => {
       invalidFirestores.forEach((invalidFirestore) => {
-        // @ts-ignore
-        expect(() => new GeoCollectionReference(invalidFirestore))
-          .to.throw(null, 'Query must be an instance of a Firestore Query');
+        expect(() => new GeoCollectionReference(invalidFirestore as any as firebase.firestore.CollectionReference))
+          .to.throw();
       });
     });
 
@@ -37,7 +36,7 @@ describe('GeoCollectionReference Tests:', () => {
 
   describe('id:', () => {
     it('id will the identifier of a Firestore CollectionReference', () => {
-      expect(geocollection.id).to.equal(geocollection['_collection'].id);
+      expect(geocollection.id).to.equal(geocollection.native.id);
     });
 
     it('id will be a sting', () => {

@@ -1,4 +1,4 @@
-import { GeoFirestoreTypes } from './firestoretypes';
+import { GeoFirestoreTypes } from './geofirestoretypes';
 
 // Characters used in location geohashes
 export const BASE32 = '0123456789bcdefghjkmnpqrstuvwxyz';
@@ -129,10 +129,10 @@ export function decodeGeoQueryDocumentSnapshotData(
   center?: GeoFirestoreTypes.web.GeoPoint | GeoFirestoreTypes.cloud.GeoPoint
 ): { data: () => GeoFirestoreTypes.DocumentData; distance: number; } {
   if (validateGeoDocument(data, true)) {
-    const distance = (center) ? calculateDistance(data.l, center) : null;
+    const distance = (center) ? calculateDistance(data.l, center) : (null as any as number);
     return { data: () => data.d, distance };
   }
-  return { data: () => data, distance: null };
+  return { data: () => data, distance: (null as any as number) };
 }
 
 /**
@@ -236,7 +236,7 @@ export function encodeGeoDocument(
  * @return The same object but without custom key
  */
 export function sanitizeSetOptions(
-  options: GeoFirestoreTypes.SetOptions
+  options: GeoFirestoreTypes.SetOptions = {}
 ): GeoFirestoreTypes.SetOptions {
   const clone = { ...options };
   delete clone.customKey;
@@ -254,7 +254,7 @@ export function encodeSetDocument(
   data: GeoFirestoreTypes.DocumentData,
   options?: GeoFirestoreTypes.SetOptions
 ): GeoFirestoreTypes.Document {
-  if (Object.prototype.toString.call(data) === '[object Object]') {
+  if (data && Object.prototype.toString.call(data) === '[object Object]') {
     const customKey = (options) ? options.customKey : null;
     const unparsed: GeoFirestoreTypes.DocumentData = ('d' in data) ? data.d : data;
     const location = findCoordinates(unparsed, customKey, (options && (options.merge || !!options.mergeFields)));
@@ -277,7 +277,7 @@ export function encodeSetDocument(
  */
 export function encodeUpdateDocument(data: GeoFirestoreTypes.UpdateData, customKey?: string): GeoFirestoreTypes.UpdateData {
   if (Object.prototype.toString.call(data) === '[object Object]') {
-    const result = {};
+    const result: any = {};
     const location = findCoordinates(data, customKey, true);
     if (location) {
       result['l'] = location;
@@ -301,24 +301,25 @@ export function encodeUpdateDocument(data: GeoFirestoreTypes.UpdateData, customK
  * @return The GeoPoint for the location field of a document. 
  */
 export function findCoordinates(
-  document: GeoFirestoreTypes.DocumentData, customKey?: string, flag = false
+  document: GeoFirestoreTypes.DocumentData, customKey?: string | null | undefined, flag = false
 ): GeoFirestoreTypes.web.GeoPoint | GeoFirestoreTypes.cloud.GeoPoint {
-  let error: string;
+  let error: string | boolean = false;
   let coordinates;
-
-  if (!customKey) {
-    coordinates = document['coordinates'];
-  } else if (customKey in document) {
-    coordinates = document[customKey];
-  } else {
-    const props = customKey.split('.');
-    coordinates = document;
-    for (const prop of props) {
-      if (!(prop in coordinates)) {
-        coordinates = document['coordinates'];
-        break;
+  if (document) {
+    if (!customKey) {
+      coordinates = document['coordinates'];
+    } else if (customKey in document) {
+      coordinates = document[customKey];
+    } else {
+      const props = customKey.split('.');
+      coordinates = document;
+      for (const prop of props) {
+        if (!(prop in coordinates)) {
+          coordinates = document['coordinates'];
+          break;
+        }
+        coordinates = coordinates[prop];
       }
-      coordinates = coordinates[prop];
     }
   }
 
@@ -482,9 +483,9 @@ export function toGeoPoint(latitude: number, longitude: number): GeoFirestoreTyp
  * @return Flag if data is valid 
  */
 export function validateGeoDocument(data: GeoFirestoreTypes.Document, flag = false): boolean {
-  let error: string;
+  let error: string | boolean = false;
 
-  error = (!validateGeohash(data.g, true)) ? 'invalid geohash on object' : null;
+  error = (!validateGeohash(data.g, true)) ? 'invalid geohash on object' : false;
   error = (!validateLocation(data.l, true)) ? 'invalid location on object' : error;
 
   if (!data || !('d' in data) || typeof data.d !== 'object') {
@@ -533,14 +534,15 @@ export function validateGeohash(geohash: string, flag = false): boolean {
  * @param flag Tells function to send up boolean if valid instead of throwing an error.
  */
 export function validateLimit(limit: number, flag = false): boolean {
-  let error: string;
+  let error: string | boolean = false;
+
   if (typeof limit !== 'number' || isNaN(limit)) {
     error = 'limit must be a number';
   } else if (limit < 0) {
     error = 'limit must be greater than or equal to 0';
   }
 
-  if (typeof error !== 'undefined' && !flag) {
+  if (error && !flag) {
     throw new Error(error);
   } else {
     return !error;
@@ -554,7 +556,7 @@ export function validateLimit(limit: number, flag = false): boolean {
  * @param flag Tells function to send up boolean if valid instead of throwing an error.
  */
 export function validateLocation(location: GeoFirestoreTypes.web.GeoPoint | GeoFirestoreTypes.cloud.GeoPoint, flag = false): boolean {
-  let error: string;
+  let error: string | boolean = false;
 
   if (!location) {
     error = 'GeoPoint must exist';
@@ -577,7 +579,7 @@ export function validateLocation(location: GeoFirestoreTypes.web.GeoPoint | GeoF
     }
   }
 
-  if (typeof error !== 'undefined' && !flag) {
+  if (error && !flag) {
     throw new Error('Invalid location: ' + error);
   } else {
     return !error;

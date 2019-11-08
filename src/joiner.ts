@@ -1,4 +1,4 @@
-import { GeoFirestoreTypes } from './firestoretypes';
+import { GeoFirestoreTypes } from './geofirestoretypes';
 import { GeoQuerySnapshot } from './querysnapshot';
 import { validateQueryCriteria, calculateDistance } from './utils';
 
@@ -12,14 +12,15 @@ export class GeoJoinerGet {
 
   /**
    * @param snapshots An array of snpashots from a Firestore Query `get` call.
-   * @param _queryCriteria The query criteria of geo based queries, includes field such as center, radius, and limit.
+   * @param _queryCriteria The query criteria of geo based queries, includes
+   * field such as center, radius, and limit.
    */
   constructor(snapshots: GeoFirestoreTypes.web.QuerySnapshot[], private _queryCriteria: GeoFirestoreTypes.QueryCriteria) {
     validateQueryCriteria(_queryCriteria);
 
     snapshots.forEach((snapshot: GeoFirestoreTypes.web.QuerySnapshot) => {
       snapshot.docs.forEach((doc) => {
-        const distance = calculateDistance(this._queryCriteria.center, doc.data().l);
+        const distance = calculateDistance(_queryCriteria.center, doc.data().l);
         if (this._queryCriteria.radius >= distance) {
           this._docs.set(doc.id, doc);
         }
@@ -42,19 +43,20 @@ export class GeoJoinerGet {
    * 
    * @return A new `GeoQuerySnapshot` of the filtered documents from the `get`.
    */
-  public getGeoQuerySnapshot(): GeoQuerySnapshot {
+  getGeoQuerySnapshot(): GeoQuerySnapshot {
     const docs = Array.from(this._docs.values());
     return new GeoQuerySnapshot(
       { docs, docChanges: () => docs.map((doc, index) => {
         return { doc, newIndex: index, oldIndex: -1, type: 'added' };
       }) } as GeoFirestoreTypes.web.QuerySnapshot,
-      this._queryCriteria.center
+      this._queryCriteria
     );
   }
 }
 
 /**
- * A `GeoJoinerOnSnapshot` subscribes and aggregates multiple `onSnapshot` listeners
+ * A `GeoJoinerOnSnapshot` subscribes and aggregates multiple `onSnapshot`
+ * listeners
  * while filtering out documents not in query radius.
  */
 export class GeoJoinerOnSnapshot {
@@ -69,9 +71,12 @@ export class GeoJoinerOnSnapshot {
 
   /**
    * @param _queries An array of Firestore Queries to aggregate.
-   * @param _queryCriteria The query criteria of geo based queries, includes field such as center, radius, and limit.
-   * @param _onNext A callback to be called every time a new `QuerySnapshot` is available.
-   * @param _onError A callback to be called if the listen fails or is cancelled. No further callbacks will occur.
+   * @param _queryCriteria The query criteria of geo based queries, includes
+   * field such as center, radius, and limit.
+   * @param _onNext A callback to be called every time a new `QuerySnapshot`
+   * is available.
+   * @param _onError A callback to be called if the listen fails or is cancelled.
+   * No further callbacks will occur.
    */
   constructor(
     private _queries: GeoFirestoreTypes.web.Query[], private _queryCriteria: GeoFirestoreTypes.QueryCriteria,
@@ -90,9 +95,10 @@ export class GeoJoinerOnSnapshot {
   /**
    * A functions that clears the interval and ends all query subscriptions.
    *
-   * @return An unsubscribe function that can be called to cancel all snapshot listener.
+   * @return An unsubscribe function that can be called to cancel all snapshot
+   * listener.
    */
-  public unsubscribe(): () => void {
+  unsubscribe(): () => void {
     return () => {
       clearInterval(this._interval);
       this._subscriptions.forEach(subscription => subscription());
@@ -142,7 +148,7 @@ export class GeoJoinerOnSnapshot {
         this._docs.delete(change.doc.id);
       }
       return filtered;
-    }, []);
+    }, [] as GeoFirestoreTypes.web.QueryDocumentSnapshot[]);
 
     this._firstEmitted = true;
     this._onNext(new GeoQuerySnapshot({
@@ -152,12 +158,13 @@ export class GeoJoinerOnSnapshot {
               reduced.push(change);
             }
             return reduced;
-          }, [])
-    } as GeoFirestoreTypes.web.QuerySnapshot, this._queryCriteria.center));
+          }, [] as GeoFirestoreTypes.web.DocumentChange[])
+    } as GeoFirestoreTypes.web.QuerySnapshot, this._queryCriteria));
   }
 
   /**
-   * Determines if new values should be emitted via `next` or if subscription should be killed with `error`.
+   * Determines if new values should be emitted via `next` or if subscription
+   * should be killed with `error`.
    */
   private _emit(): void {
     if (this._error) {
@@ -172,7 +179,8 @@ export class GeoJoinerOnSnapshot {
   }
 
   /**
-   * Parses `snapshot` and filters out documents not in query radius. Sets new values to `_docs` map.
+   * Parses `snapshot` and filters out documents not in query radius.
+   * Sets new values to `_docs` map.
    *
    * @param snapshot The `QuerySnapshot` of the query.
    * @param index Index of query who's snapshot has been triggered.
@@ -195,7 +203,7 @@ export class GeoJoinerOnSnapshot {
           }, distance, emitted: this._firstEmitted ? !!fromMap : false
         };
 
-        if (this._queryCriteria.radius >= distance) { // Ensure doc in query radius
+        if (this._queryCriteria.radius >= (distance || 0)) { // Ensure doc in query radius
           // Ignore doc since it wasn't in map and was already 'removed'
           if (!fromMap && doc.change.type === 'removed') return;
           // Mark doc as 'added' doc since it wasn't in map and was 'modified' to be

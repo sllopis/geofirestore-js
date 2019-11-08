@@ -6,7 +6,7 @@
     "build": "rm -rf ./dist && rollup -c",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "docs": "typedoc --module node --target es5 --out docs/ src/",
-    "lint": "tslint -p ./tslint.json 'src/**/*.ts' 'test/**/*.ts'",
+    "lint": "gts check",
     "test": "nyc --reporter=html --reporter=text mocha",
     "release:major": "changelog -M && git add . && git commit -m 'chore(release): major version release' && npm version major",
     "release:minor": "changelog -m && git add . && git commit -m 'chore(release): minor version release' && npm version minor",
@@ -19,7 +19,7 @@
   "browser": "dist/geofirestore.js",
   "module": "dist/index.esm.js",
   "typings": "dist/index.d.ts",
-  "author": "Michael Solati mkslt04@gmail.com",
+  "author": "Michael Solati <mkslt04@gmail.com>",
   "homepage": "https://geofirestore.com/",
   "repository": {
     "type": "git",
@@ -50,19 +50,19 @@
     "README.md"
   ],
   "dependencies": {
-    "@firebase/firestore-types": ">= 1.0.0",
-    "@google-cloud/firestore": ">= 2.0.0",
-    "@types/node": "x.x.x"
+    "firebase": ">= 6.0.0",
+    "firebase-admin": ">= 8.0.0"
   },
   "devDependencies": {
     "@firebase/util": "0.x.x",
     "@types/chai": "4.x.x",
     "@types/mocha": "5.x.x",
+    "@types/node": "12.x.x",
     "chai": "4.x.x",
     "coveralls": "3.x.x",
-    "firebase": "6.x.x",
     "firebase-tools": "7.x.x",
     "generate-changelog": "1.x.x",
+    "gts": "1.x.x",
     "jsdom": "15.x.x",
     "jsdom-global": "3.x.x",
     "mocha": "6.x.x",
@@ -72,10 +72,9 @@
     "rollup-plugin-commonjs": "10.x.x",
     "rollup-plugin-copier": "1.x.x",
     "rollup-plugin-node-resolve": "5.x.x",
+    "rollup-plugin-terser": "5.x.x",
     "rollup-plugin-typescript2": "0.x.x",
-    "rollup-plugin-uglify": "6.x.x",
     "ts-node": "8.x.x",
-    "tslint": "5.x.x",
     "typedoc": "0.x.x",
     "typescript": "3.x.x"
   },

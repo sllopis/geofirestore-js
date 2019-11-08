@@ -2,13 +2,13 @@ import commonjs from 'rollup-plugin-commonjs';
 import copier from 'rollup-plugin-copier';
 import resolveModule from 'rollup-plugin-node-resolve';
 import typescript from 'rollup-plugin-typescript2';
-import { uglify } from 'rollup-plugin-uglify';
+import { terser } from 'rollup-plugin-terser';
 import pkg from './package.json';
 
 const copy = copier({
   items: [{
-    src: 'src/GeoFirestoreTypes.ts',
-    dest: 'dist/GeoFirestoreTypes.ts',
+    src: 'src/geofirestoretypes.ts',
+    dest: 'dist/geofirestoretypes.ts',
     createPath: true
   }]
 });
@@ -22,7 +22,12 @@ const onwarn = (warning, rollupWarn) => {
 const plugins = [
   resolveModule(),
   typescript({
-    typescript: require('typescript')
+    tsconfig: 'tsconfig.json',
+    tsconfigOverride: {
+      compilerOptions: {
+        module: 'ESNext'
+      }
+    }
   }),
   commonjs(),
   copy
@@ -52,7 +57,7 @@ export default [{
     },
     plugins: [
       ...plugins,
-      uglify()
+      terser()
     ],
     onwarn
   }

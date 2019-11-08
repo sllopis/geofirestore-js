@@ -51,7 +51,7 @@ describe('GeoJoinerOnSnapshot Tests:', () => {
         .then(() => {
           return new Promise((resolve) => {
             let count = 0;
-            let timer;
+            let timer: any;
             const joiner = new GeoJoinerOnSnapshot([collection], validQueryCriterias[0], (da) => {
               if (!timer) {
                 joiner.unsubscribe()();
